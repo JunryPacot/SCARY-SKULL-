@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IT'S WATCHING... (Halloween 2025)</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: radial-gradient(circle, #000 0%, #100 100%);
+      overflow: hidden;
+      font-family: 'Nosifer', cursive;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      position: relative;
+      cursor: none; /* Hide cursor for immersion */
+    }
+
+    .cursor {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      background: radial-gradient(circle, #f00 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 999;
+      mix-blend-mode: screen;
+      animation: pulse-cursor 2s infinite;
+    }
+
+    @keyframes pulse-cursor {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.5); opacity: 1; }
+    }
+
+    .container {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      perspective: 1000px; /* For 3D tilt */
+    }
+
+    #scaryImage {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: brightness(0.6) contrast(1.4) sepia(0.3);
+      animation: float 4s ease-in-out infinite, shake 0.3s infinite alternate, glitch 0.1s infinite;
+      transform-origin: center;
+      transition: transform 0.1s ease-out;
+    }
+
+    /* Enhanced floating */
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotateX(0deg); }
+      50% { transform: translateY(-30px) rotateX(5deg); }
+    }
+
+    /* Intense shaking */
+    @keyframes shake {
+      0% { transform: translateX(0) translateY(0); }
+      25% { transform: translateX(-2px) translateY(1px); }
+      50% { transform: translateX(2px) translateY(-1px); }
+      75% { transform: translateX(-1px) translateY(2px); }
+      100% { transform: translateX(1px) translateY(0); }
+    }
+
+    /* Glitch effect */
+    @keyframes glitch {
+      0%, 100% { transform: translate(0); }
+      10% { transform: translate(-2px, 2px); }
+      20% { transform: translate(-1px, -1px); }
+      30% { transform: translate(1px, 1px); }
+      40% { transform: translate(2px, -2px); }
+    }
+
+    /* Enhanced red glow with blood tint */
+    .glow {
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      width: 120%;
+      height: 120%;
+      background: radial-gradient(circle at center, rgba(139, 0, 0, 0.4), rgba(255, 0, 0, 0.2) 50%, transparent 80%);
+      opacity: 0;
+      pointer-events: none;
+      animation: flicker 0.8s infinite;
+      mix-blend-mode: multiply;
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 0; }
+      5%, 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%, 95% { opacity: 0.6; }
+      10%, 20%, 30%, 40%, 50%, 60%, 70%, 80%, 90% { opacity: 0; }
+    }
+
+    /* Breathing darkness */
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, rgba(0,0,0,0.7), rgba(50,0,0,0.8));
+      animation: breathe 5s infinite ease-in-out;
+      pointer-events: none;
+    }
+
+    @keyframes breathe {
+      0%, 100% { opacity: 0.7; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.02); }
+    }
+
+    /* Blood drip effect */
+    .blood {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .drip {
+      position: absolute;
+      width: 4px;
+      height: 20px;
+      background: #800;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      animation: drip 3s linear infinite;
+    }
+
+    .drip:nth-child(1) { left: 20%; animation-delay: 0s; }
+    .drip:nth-child(2) { left: 40%; animation-delay: 0.5s; }
+    .drip:nth-child(3) { left: 60%; animation-delay: 1s; }
+    .drip:nth-child(4) { left: 80%; animation-delay: 1.5s; }
+
+    @keyframes drip {
+      0% { transform: translateY(-100px) scaleY(1); opacity: 1; }
+      100% { transform: translateY(400px) scaleY(2); opacity: 0; }
+    }
+
+    /* Whispering texts that change */
+    .whispers {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: rgba(255, 0, 0, 0.8);
+      font-size: 1.5rem;
+      text-align: center;
+      text-shadow: 0 0 20px #f00, 2px 2px 4px #000;
+      opacity: 0;
+      animation: whisper 4s infinite;
+      letter-spacing: 2px;
+      white-space: nowrap;
+    }
+
+    @keyframes whisper {
+      0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+      10% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+      90% { opacity: 1; }
+    }
+
+    /* TV Static + Screen Shake */
+    .static {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(255,255,255,0.05),
+        rgba(255,255,255,0.05) 1px,
+        transparent 1px,
+        transparent 2px
+      );
+      pointer-events: none;
+      opacity: 0.2;
+      animation: static 0.1s steps(10) infinite;
+      z-index: 10;
+    }
+
+    @keyframes static {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(5px); }
+    }
+
+    /* Screen shake class */
+    .shake-screen {
+      animation: shake-screen 0.5s cubic-bezier(.36,.07,.19,.97) both;
+      transform-origin: center center;
+    }
+
+    @keyframes shake-screen {
+      10%, 90% { transform: translate3d(-1px, 0, 0); }
+      20%, 80% { transform: translate3d(2px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+      40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
+
+    /* Enhanced Jump Scare */
+    .jumpscare {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: linear-gradient(45deg, #f00, #800);
+      opacity: 0;
+      z-index: 100;
+      pointer-events: none;
+      transform: scale(1);
+    }
+
+    .jumpscare.active {
+      opacity: 1;
+      animation: jumpscare-flash 0.2s infinite;
+    }
+
+    @keyframes jumpscare-flash {
+      0%, 100% { opacity: 1; transform: scale(1.05); }
+      50% { opacity: 0.8; transform: scale(1.1); }
+    }
+
+    /* Animated Fullscreen Prompt - Pulsing, semi-transparent */
+    .fullscreen-prompt {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.7);
+      color: #f00;
+      padding: 15px 25px;
+      border: 2px solid #f00;
+      border-radius: 10px;
+      cursor: pointer;
+      z-index: 50;
+      font-size: 1.2rem;
+      transition: all 0.3s;
+      animation: prompt-pulse 2s infinite, prompt-glow 1s infinite alternate;
+      backdrop-filter: blur(5px);
+    }
+
+    @keyframes prompt-pulse {
+      0%, 100% { transform: translateX(-50%) scale(1); }
+      50% { transform: translateX(-50%) scale(1.05); }
+    }
+
+    @keyframes prompt-glow {
+      0% { box-shadow: 0 0 10px #f00; }
+      100% { box-shadow: 0 0 20px #f00, 0 0 30px #800; }
+    }
+
+    .fullscreen-prompt:hover {
+      background: rgba(255,0,0,0.2);
+      color: #fff;
+      transform: translateX(-50%) scale(1.1);
+    }
+
+    /* Hide after click */
+    .fullscreen-prompt.hidden { display: none; }
+
+    /* Custom Animated Alert Modal - Transparent, shaking, fading in */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1001;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.85); /* Semi-transparent black */
+      backdrop-filter: blur(10px);
+      animation: modal-fade 1s ease-in-out;
+    }
+
+    @keyframes modal-fade {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    .modal-content {
+      background: transparent;
+      color: #f00;
+      text-align: center;
+      margin: 20% auto;
+      padding: 40px;
+      border: 2px dashed #f00;
+      border-radius: 15px;
+      font-size: 1.5rem;
+      animation: modal-shake 0.5s infinite, text-drip 3s infinite;
+      text-shadow: 0 0 10px #f00;
+      max-width: 80%;
+    }
+
+    @keyframes modal-shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    @keyframes text-drip {
+      0%, 100% { filter: drop-shadow(0 0 0 #800); }
+      50% { filter: drop-shadow(0 2px 4px #800); }
+    }
+
+    .modal-content button {
+      background: transparent;
+      border: 2px solid #f00;
+      color: #f00;
+      padding: 10px 20px;
+      margin-top: 20px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      animation: button-glow 1s infinite alternate;
+      transition: all 0.3s;
+    }
+
+    @keyframes button-glow {
+      0% { box-shadow: 0 0 5px #f00; }
+      100% { box-shadow: 0 0 15px #f00; }
+    }
+
+    .modal-content button:hover {
+      background: #f00;
+      color: #000;
+    }
+
+    .close {
+      color: #f00;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      position: absolute;
+      right: 20px;
+      top: 10px;
+    }
+
+    .close:hover {
+      color: #fff;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Nosifer&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+
+  <div class="container" id="container">
+    <img id="scaryImage" src="https://assets.codepen.io/1695918/IMG_1187.png" alt="It's here... watching.">
+    <div class="glow"></div>
+    <div class="overlay"></div>
+    <div class="blood">
+      <div class="drip"></div>
+      <div class="drip"></div>
+      <div class="drip"></div>
+      <div class="drip"></div>
+    </div>
+    <div class="whispers" id="whispers"></div>
+  </div>
+
+  <div class="static"></div>
+  <div class="jumpscare" id="jumpscare"></div>
+  <button class="fullscreen-prompt" onclick="goFullscreen()">GO FULLSCREEN FOR TRUE HORROR (Click Me)</button>
+
+  <div id="horrorModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <p>For the full nightmare... ENTER NOW OR IT COMES FOR YOU!</p>
+      <button onclick="goFullscreen()">ENTER THE NIGHTMARE</button>
+    </div>
+  </div>
+
+  <audio id="scaryMusic" loop preload="auto">
+    <source src="scary.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+  
+    const whispers = [
+      "IT SEES YOU",
+      "DON'T BLINK",
+      "IT'S BEHIND YOU",
+      "RUN... OR ELSE",
+      "HAPPY HALLOWEEN 2025",
+      "FOREVER WATCHING"
+    ];
+
+    let currentWhisper = 0;
+
+    function updateWhisper() {
+      const elem = document.getElementById('whispers');
+      elem.textContent = whispers[currentWhisper];
+      currentWhisper = (currentWhisper + 1) % whispers.length;
+      setTimeout(updateWhisper, 4000);
+    }
+    updateWhisper();
+
+  
+    document.addEventListener('mousemove', (e) => {
+      const cursor = document.getElementById('cursor');
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+
+  
+      const container = document.getElementById('container');
+      const rect = container.getBoundingClientRect();
+      const x = (e.clientX - rect.left - rect.width / 2) / 20;
+      const y = (e.clientY - rect.top - rect.height / 2) / 20;
+      document.getElementById('scaryImage').style.transform += ` rotateY(${x}deg) rotateX(${-y}deg)`;
+    });
+
+    
+    function goFullscreen() {
+      const elem = document.documentElement;
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+      }
+      document.querySelector('.fullscreen-prompt').classList.add('hidden');
+      closeModal(); 
+
+      
+      const music = document.getElementById('scaryMusic');
+      music.volume = 0.3; 
+      music.play().catch(e => console.log('Music play failed:', e));
+    }
+
+    function closeModal() {
+      document.getElementById('horrorModal').style.display = 'none';
+    }
+
+  
+    window.onclick = function(event) {
+      const modal = document.getElementById('horrorModal');
+      if (event.target == modal) {
+        closeModal();
+      }
+    }
+
+    
+    function triggerJumpscare() {
+      const scare = document.getElementById('jumpscare');
+      const img = document.getElementById('scaryImage');
+      const container = document.getElementById('container');
+      const body = document.body;
+
+  
+      scare.classList.add('active');
+      img.style.transform = 'scale(1.8) translateY(-50px) rotateZ(5deg)';
+      img.style.filter = 'brightness(2) contrast(2) hue-rotate(0deg) drop-shadow(0 0 50px #f00)';
+      body.classList.add('shake-screen');
+
+    
+      try {
+        
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        oscillator.frequency.setValueAtTime(200, audioCtx.currentTime); 
+        oscillator.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
+        gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+        oscillator.start(audioCtx.currentTime);
+        oscillator.stop(audioCtx.currentTime + 0.3);
+
+        setTimeout(() => {
+          const whisperOsc = audioCtx.createOscillator();
+          const whisperGain = audioCtx.createGain();
+          whisperOsc.connect(whisperGain);
+          whisperGain.connect(audioCtx.destination);
+          whisperOsc.frequency.setValueAtTime(100, audioCtx.currentTime);
+          whisperGain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+          whisperGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1);
+          whisperOsc.start();
+          whisperOsc.stop(audioCtx.currentTime + 1);
+        }, 100);
+      } catch (e) {
+  
+        console.log('Scream triggered!');
+      }
+
+      setTimeout(() => {
+        scare.classList.remove('active');
+        img.style.transform = '';
+        img.style.filter = 'brightness(0.6) contrast(1.4) sepia(0.3)';
+        body.classList.remove('shake-screen');
+      }, 400);
+      const delay = 4000 + Math.random() * 6000;
+      setTimeout(triggerJumpscare, delay);
+    }
+    setTimeout(triggerJumpscare, 1000);
+    setTimeout(() => {
+      if (!document.fullscreenElement && !document.querySelector('.fullscreen-prompt.hidden')) {
+        document.getElementById('horrorModal').style.display = 'block';
+      }
+    }, 5000);
+  </script>
+
+</body>
+    </html>
